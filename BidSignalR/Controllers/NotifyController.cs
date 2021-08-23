@@ -62,5 +62,15 @@ namespace BidSignalR.Controllers
 
             return Json(bidResponse);
         }
+        public ActionResult Bidv2()
+        {
+            return View()
+        }
+        [HttpPost]
+        public ActionResult Bidv2(BidV2Model model)
+        {
+            BidV2SuccessResponse bidV2SuccessResponse = new BidV2SuccessResponse();
+            return Json(bidV2SuccessResponse);
+        }
     }
 }
