@@ -1,0 +1,79 @@
+﻿@model BidSignalR.Models.Bid
+
+<div class="col-md-auto border" style="padding:25px;">
+    @using (Html.BeginForm("Index", "Notify"))
+    {
+        @*<form asp-action="Index" asp-controller="Notify">*@
+        @*<form id="idForm">*@
+        @*<form id="my_form" asp-action="Index"
+            method="post" data-ajax="true" data-ajax-method="post" data-ajax-update="#panel" data-ajax-mode='replace' data-ajax-url="@Url.Action("Index","Notify")">*@
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="auctionid" class="control-label"></label>
+            <input asp-for="auctionid" class="form-control" />
+            <span asp-validation-for="auctionid" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="lotid" class="control-label"></label>
+            <input asp-for="lotid" class="form-control" />
+            <span asp-validation-for="lotid" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="platformid" class="control-label"></label>
+            <input asp-for="platformid" class="form-control" />
+            <span asp-validation-for="platformid" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="marketplaceid" class="control-label"></label>
+            <input asp-for="marketplaceid" class="form-control" />
+            <span asp-validation-for="marketplaceid" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="bidderid" class="control-label"></label>
+            <input asp-for="bidderid" class="form-control" />
+            <span asp-validation-for="bidderid" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="amount" class="control-label"></label>
+            <input asp-for="amount" class="form-control" />
+            <span asp-validation-for="amount" class="text-danger"></span>
+        </div>
+        <div class="form-group mt-2">
+            <input type="submit" value="Submit" class="btn btn-primary" id="btnSubmit" />
+        </div>
+
+        <label id="idBidResponse" style="display:none" class="text-danger"></label>
+        @*@if (!string.IsNullOrEmpty(ViewBag.BidResponse))
+            {
+                <span> @ViewBag.BidResponse </span>
+            }*@
+        @*</form>*@
+    }
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('form').submit(function () {
+            debugger;
+            var serializedForm = $(this).serialize();
+            $.ajax({
+                url: '@Url.Action("Index")',
+                type: "POST",
+                data: serializedForm,
+                success: function (bidResponse) {
+                    debugger;
+                    document.getElementById("idBidResponse").style.display = 'block';
+                    document.getElementById("idBidResponse").value = bidResponse;
+                    document.getElementById("idBidResponse").innerHTML = bidResponse;
+                },
+                error: function (result) {
+                    debugger;
+                    alert("Failed");
+                }
+            });
+            return false;
+        });
+    });
+</script>
