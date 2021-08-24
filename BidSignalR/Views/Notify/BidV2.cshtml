@@ -1,0 +1,114 @@
+﻿@model BidSignalR.Models.Bid
+
+<div class="col-md-auto border" style="padding:25px;">
+    @using (Html.BeginForm("Index", "Notify"))
+    {
+        @*<form asp-action="Index" asp-controller="Notify">*@
+        @*<form id="idForm">*@
+        @*<form id="my_form" asp-action="Index"
+            method="post" data-ajax="true" data-ajax-method="post" data-ajax-update="#panel" data-ajax-mode='replace' data-ajax-url="@Url.Action("Index","Notify")">*@
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="auctionid" class="control-label"></label>
+            <input asp-for="auctionid" class="form-control" />
+            <span asp-validation-for="auctionid" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="lotid" class="control-label"></label>
+            <input asp-for="lotid" class="form-control" />
+            <span asp-validation-for="lotid" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="platformid" class="control-label"></label>
+            <input asp-for="platformid" class="form-control" />
+            <span asp-validation-for="platformid" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="marketplaceid" class="control-label"></label>
+            <input asp-for="marketplaceid" class="form-control" />
+            <span asp-validation-for="marketplaceid" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="bidderid" class="control-label"></label>
+            <input asp-for="bidderid" class="form-control" />
+            <span asp-validation-for="bidderid" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="amount" class="control-label"></label>
+            <input asp-for="amount" class="form-control" />
+            <span asp-validation-for="amount" class="text-danger"></span>
+        </div>
+        <div class="form-group mt-2">
+            <input type="submit" value="Submit" class="btn btn-primary" id="btnSubmit" />
+        </div>
+
+        <label id="idBidResponse" style="display:none" class="text-danger"></label>
+        @*@if (!string.IsNullOrEmpty(ViewBag.BidResponse))
+            {
+                <span> @ViewBag.BidResponse </span>
+            }*@
+        @*</form>*@
+    }
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    function SendMessage() {
+        debugger;
+        let body = `{
+    "auctionId": 1,
+    "lotId": 33,
+    "biddingType": 0,
+    "openingPrice": 40,
+    "reservePrice": 5000,
+    "buyItNow": 5000,
+    "currency": "GBP",
+    "incrementType": "auction",
+    "increment": [
+        {
+            "Low": 0,
+            "High": 100,
+            "IncrementValue": 10
+        },
+        {
+            "Low": 100,
+            "High": 300,
+            "IncrementValue": 20
+        },
+        {
+            "Low": 300
+        }
+    ],
+    "quantity": 1,
+    "isPiecemeal": false,
+    "startTime": "2021-07-19T14:00:00+00:00",
+    "endsFrom": "2022-08-15T14:13:00+00:00",
+    "timeZone": "UTC",
+    "extensionTimeInSeconds": 900,
+    "biddingSuspended": false
+}`;
+        let headers = {
+            "Atg-Client-Id": " 1",
+            "Atg-Client-Ip": " 1",
+            "Atg-App-Id": " 1",
+            "Atg-User-Id": " 1",
+            "Content-Type": " application/json",
+        };
+        $.ajax('@Url.Action("Bidv2")', {
+            type: 'POST',  // http method
+            data: body,  // data to submit            
+            headers: headers,
+            success: function (data, status, xhr) {
+                if (data.isValid) {
+                    alert('Update has been submitted');
+                }
+                else {
+                    alert(data[0].description);
+                }
+            },
+            error: function (jqXhr, textStatus, errorMessage) {
+                alert(errorMessage);
+            }
+        });
+    }
+</script>

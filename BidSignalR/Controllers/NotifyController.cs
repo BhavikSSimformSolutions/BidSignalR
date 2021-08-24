@@ -13,18 +13,23 @@ using System.Net.Http.Json;
 using System.Net;
 using RestSharp;
 using BidSignalR.Constants;
-
+using AutoMapper;
+using MediatR;
+using BidSignalR.Handler.Bid.Command;
 namespace BidSignalR.Controllers
 {
     public class NotifyController : Controller
     {
+        private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
         private readonly IMessageHandler _messageHandler;
         private readonly IRestClientApiCall _restClientApiCall;
-
-        public NotifyController(IMessageHandler messageHandler, IRestClientApiCall restClientApiCall)
+        public NotifyController(IMessageHandler messageHandler, IRestClientApiCall restClientApiCall, IMapper mapper, IMediator mediator)
         {
             _messageHandler = messageHandler;
             _restClientApiCall = restClientApiCall;
+            _mapper = mapper;
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -70,9 +75,11 @@ namespace BidSignalR.Controllers
         }
 
         [HttpPost]
-        public ActionResult ValidateAndTransformLotDetail(ValidateAndTransformLot validateAndTransformLot)
+        public async Task<ActionResult> ValidateAndTransformLotDetail([FromBody] ValidateAndTransformLot validateAndTransformLot)
         {
             ValidateAndTransformLotSuccessResponse ValidateAndTransformLotSuccessResponse = new ValidateAndTransformLotSuccessResponse();
+            var PlaceBidCommand = _mapper.Map<PlaceBidCommand>(validateAndTransformLot);
+            ValidateAndTransformLotSuccessResponse = await _mediator.Send(PlaceBidCommand);
             return Json(ValidateAndTransformLotSuccessResponse);
         }
     }

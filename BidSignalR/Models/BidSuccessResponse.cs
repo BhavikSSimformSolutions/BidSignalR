@@ -36,8 +36,8 @@ namespace BidSignalR.Models
     public class Increment
     {
         public int low { get; set; }
-        public int high { get; set; }
-        public int incrementValue { get; set; }
+        public int? high { get; set; }
+        public int? incrementValue { get; set; }
     }
 
     public class Validationresult

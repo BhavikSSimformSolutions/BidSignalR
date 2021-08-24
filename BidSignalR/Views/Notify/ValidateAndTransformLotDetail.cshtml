@@ -153,11 +153,17 @@
 
             let data = JSON.stringify(serializedForm);
             console.log(data);
+            var data1 = {
+                auctionId: 1
+            }
+
+            var dataType = 'application/json; charset=utf-8';
 
             $.ajax({
                 url: '@Url.Action("ValidateAndTransformLotDetail")',
-                type: "POST",
-                data: data,
+                type: "POST",                
+                data: serializedForm,
+
                 success: function (bidResponse) {
                     //document.getElementById("idBidResponse").style.display = 'block';
                     //document.getElementById("idBidResponse").value = bidResponse;

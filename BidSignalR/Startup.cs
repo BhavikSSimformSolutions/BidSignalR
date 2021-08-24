@@ -1,12 +1,15 @@
 using BidSignalR.ConHub;
 using BidSignalR.Services;
 using BidSignalR.Services.IServices;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Net.Http;
+using System.Reflection;
 
 namespace BidSignalR
 {
@@ -29,6 +32,9 @@ namespace BidSignalR
             services.Add(new ServiceDescriptor(typeof(IMessageHandler), typeof(MessageHandler), ServiceLifetime.Transient)); // Transient
 
             services.AddScoped<IRestClientApiCall, RestClientApiCall>();
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

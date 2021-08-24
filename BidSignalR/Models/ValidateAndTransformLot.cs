@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AutoMapper;
+using BidSignalR.Handler.Bid.Command;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -71,5 +73,12 @@ namespace BidSignalR.Models
     {
         public List<ValidationResult> validationResults { get; set; }
         public LotDetail lotDetail { get; set; }
+    }
+    public class BidV2ModelProfile : Profile
+    {
+        public BidV2ModelProfile()
+        {
+            CreateMap<PlaceBidCommand, ValidateAndTransformLot>().ReverseMap();
+        }
     }
 }
