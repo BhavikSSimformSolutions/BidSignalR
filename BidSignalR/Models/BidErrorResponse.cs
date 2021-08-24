@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace BidSignalR.Models
 {
-    public class BidErrorResponse
-    {
-        public int code { get; set; }
-        public string value { get; set; }
-        public string description { get; set; }
-    }
+    //public class ValidationResult
+    //{
+    //    public int code { get; set; }
+    //    public string value { get; set; }
+    //    public string description { get; set; }
+    //}
 
     public class CodeValueDescription
     {

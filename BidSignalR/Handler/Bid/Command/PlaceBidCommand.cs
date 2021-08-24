@@ -8,6 +8,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -43,6 +44,7 @@ namespace BidSignalR.Handler.Bid.Command
             }
             public async Task<ValidateAndTransformLotSuccessResponse> Handle(PlaceBidCommand request, CancellationToken cancellationToken)
             {
+                ValidateAndTransformLotSuccessResponse SuccessResponse = new ValidateAndTransformLotSuccessResponse();
                 var BidV2Model = _mapper.Map<ValidateAndTransformLot>(request);
 
                 var RestRequest = new RestRequest(Method.POST);
@@ -54,8 +56,17 @@ namespace BidSignalR.Handler.Bid.Command
                 RestRequest.AddHeader("Content-Type", "application/json");
                 RestRequest.AddParameter("application/json", JsonConvert.SerializeObject(BidV2Model), ParameterType.RequestBody);
 
-                IRestResponse response = _restClientApiCall.Execute(RestRequest, ApplicationContants.BID_APIV2);                
-                return  JsonConvert.DeserializeObject<ValidateAndTransformLotSuccessResponse>(response.Content);                
+                IRestResponse response = _restClientApiCall.Execute(RestRequest, ApplicationContants.BID_APIV2);
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+
+                    SuccessResponse = JsonConvert.DeserializeObject<ValidateAndTransformLotSuccessResponse>(response.Content);
+                }
+                else if (response.StatusCode == HttpStatusCode.UnprocessableEntity)
+                {
+                    SuccessResponse.validationResults = JsonConvert.DeserializeObject<List<ValidationResult>>(response.Content);
+                }
+                return SuccessResponse;
             }
         }
     }

@@ -60,7 +60,7 @@ namespace BidSignalR.Controllers
             }
             else
             {
-                bidResponse = JsonConvert.DeserializeObject<BidErrorResponse[]>(response.Content).FirstOrDefault().description;
+                bidResponse = JsonConvert.DeserializeObject<ValidationResult[]>(response.Content).FirstOrDefault().description;
             }
 
             _messageHandler.BroadcastMessage(bid);
