@@ -57,15 +57,16 @@ namespace BidSignalR.Handler.Bid.Command
                 RestRequest.AddParameter("application/json", JsonConvert.SerializeObject(BidV2Model), ParameterType.RequestBody);
 
                 IRestResponse response = _restClientApiCall.Execute(RestRequest, ApplicationContants.BID_APIV2);
+
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-
                     SuccessResponse = JsonConvert.DeserializeObject<ValidateAndTransformLotSuccessResponse>(response.Content);
                 }
                 else if (response.StatusCode == HttpStatusCode.UnprocessableEntity)
                 {
                     SuccessResponse.validationResults = JsonConvert.DeserializeObject<List<ValidationResult>>(response.Content);
                 }
+
                 return SuccessResponse;
             }
         }

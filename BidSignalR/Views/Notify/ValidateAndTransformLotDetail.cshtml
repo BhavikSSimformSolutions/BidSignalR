@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "ValidateAndTransformLotDetail";
 }
-<div class="row">
+<div class="row justify-content-center align-items-center">
     <div class="col-md-6">
         <form id="idLotForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -73,7 +73,7 @@
                                     <input class="form-control text-box single-line" id="idIncrementValue_1" type="text" value="" />
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-danger" onclick="deleteRow(1);">
+                                    <button type="button" class="btn btn-danger" id="idDeleteButton_1" onclick="deleteRow(1);">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
@@ -117,10 +117,11 @@
                     <input class="form-check-input" asp-for="biddingSuspended" /> @Html.DisplayNameFor(model => model.biddingSuspended)
                 </label>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="float:right">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+        <label id="idLotResponse" style="display:none" class="text-danger"></label>
     </div>
 </div>
 
@@ -129,8 +130,6 @@
 <script>
     $(document).ready(function () {
         $('form').submit(function () {
-            debugger;
-
             let increments = new Array();
 
             for (var i = 1; i <= $("#idIncrementTable").find("tbody>tr").length; i++) {
@@ -147,21 +146,22 @@
                     increments.push(increment);
                 }
             }
+
             var serializedForm = $(this).serializeArray();
 
             serializedForm.push({ "name": "increment", "value": increments })
 
             let data = formArrayToJson(serializedForm);
-            console.log(data);
 
             $.ajax({
                 url: '@Url.Action("ValidateAndTransformLotDetail")',
                 type: "POST",
                 data: data,
                 success: function (bidResponse) {
-                    //document.getElementById("idBidResponse").style.display = 'block';
-                    //document.getElementById("idBidResponse").value = bidResponse;
-                    //document.getElementById("idBidResponse").innerHTML = bidResponse;
+                    debugger;
+                    document.getElementById("idLotResponse").style.display = 'block';
+                    document.getElementById("idLotResponse").value = bidResponse.validationResults[0].description;
+                    document.getElementById("idLotResponse").innerHTML = bidResponse.validationResults[0].description;
                 },
                 error: function (result) {
                     alert("Failed");
@@ -170,6 +170,7 @@
             return false;
         });
     });
+
     function formArrayToJson(formArray) {
         var obj = {};
         $.each(formArray, function (i, pair) {

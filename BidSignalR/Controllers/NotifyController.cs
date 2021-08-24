@@ -77,10 +77,9 @@ namespace BidSignalR.Controllers
         [HttpPost]
         public async Task<ActionResult> ValidateAndTransformLotDetail(ValidateAndTransformLot validateAndTransformLot)
         {
-            ValidateAndTransformLotSuccessResponse ValidateAndTransformLotSuccessResponse = new ValidateAndTransformLotSuccessResponse();
             var PlaceBidCommand = _mapper.Map<PlaceBidCommand>(validateAndTransformLot);
-            ValidateAndTransformLotSuccessResponse = await _mediator.Send(PlaceBidCommand);
-            return Json(ValidateAndTransformLotSuccessResponse);
+            ValidateAndTransformLotSuccessResponse validateAndTransformLotSuccessResponse = await _mediator.Send(PlaceBidCommand);
+            return Json(validateAndTransformLotSuccessResponse);
         }
     }
 }

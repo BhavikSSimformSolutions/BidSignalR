@@ -139,6 +139,10 @@ function removeAllDivisions() {
 function addRow() {
     let rows = $("#idIncrementTable").find("tbody>tr").length + 1;
 
+    let lastRow = $('table tr:last').attr("id");
+
+    console.log(lastRow);
+
     $('<tr id="idRow_' + rows + '"><td>' +
         '<input type="text" class="form-control text-box single-line" id="idLow_' + rows + '" />' +
         '</td>' +
@@ -149,7 +153,7 @@ function addRow() {
         '<input type="text" class="form-control text-box single-line" id="idIncrementValue_' + rows + '" />' +
         '</td>' +
         '<td>' +
-        '<button type="button" class="btn btn-danger" onclick="deleteRow(' + rows + ');"><i class="fa fa-trash"></i></button>' +
+        '<button type="button" id="idDeleteButton_' + rows + '" class="btn btn-danger" onclick="deleteRow(' + rows + ');"><i class="fa fa-trash"></i></button>' +
         '</td>' +
         '</tr>').appendTo("#idIncrementTable");
 }
@@ -160,6 +164,18 @@ function deleteRow(index) {
     let rows = $("#idIncrementTable").find("tbody>tr").length;
 
     if (rows > 1) {
+        for (var i = index; i < rows; i++) {
+            var element = document.getElementById("idRow_" + (i + 1));
+            element.id = "idRow_" + i;
+
+            let deleteButton = document.getElementById('idDeleteButton_' + (i + 1));
+
+            deleteButton.removeAttribute("onclick");
+            deleteButton.setAttribute("onclick", "deleteRow(" + i + ")");
+
+            deleteButton.id = "idDeleteButton_" + i;
+        }
+
         $('#idRow_' + index).remove();
     }
 
