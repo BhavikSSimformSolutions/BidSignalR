@@ -1,0 +1,173 @@
+﻿@model BidSignalR.Models.ValidateAndTransformLot
+
+@{
+    ViewData["Title"] = "ValidateAndTransformLotDetail";
+}
+<div class="row">
+    <div class="col-md-6">
+        <form id="idLotForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="auctionId" class="control-label"></label>
+                <input asp-for="auctionId" class="form-control" />
+                <span asp-validation-for="auctionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="lotId" class="control-label"></label>
+                <input asp-for="lotId" class="form-control" />
+                <span asp-validation-for="lotId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="biddingType" class="control-label"></label>
+                <input asp-for="biddingType" class="form-control" />
+                <span asp-validation-for="biddingType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="openingPrice" class="control-label"></label>
+                <input asp-for="openingPrice" class="form-control" />
+                <span asp-validation-for="openingPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="reservePrice" class="control-label"></label>
+                <input asp-for="reservePrice" class="form-control" />
+                <span asp-validation-for="reservePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="buyItNow" class="control-label"></label>
+                <input asp-for="buyItNow" class="form-control" />
+                <span asp-validation-for="buyItNow" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="currency" class="control-label"></label>
+                <input asp-for="currency" class="form-control" />
+                <span asp-validation-for="currency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="incrementType" class="control-label"></label>
+                <input asp-for="incrementType" class="form-control" />
+                <span asp-validation-for="incrementType" class="text-danger"></span>
+            </div>
+            <div class="form-group table-responsive">
+                <fieldset>
+                    <legend>Increment</legend>
+                    <table id="idIncrementTable" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td>Low</td>
+                                <td>High</td>
+                                <td>Increment Value</td>
+                                <td>
+                                    <button id="add" type="button" class="btn btn-primary" onclick="addRow()"><i class="fa fa-plus"></i></button>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="idRow_1">
+                                <td>
+                                    <input class="form-control text-box single-line" id="idLow_1" type="text" value="" />
+                                </td>
+                                <td>
+                                    <input class="form-control text-box single-line" id="idHigh_1" type="text" value="" />
+                                </td>
+                                <td>
+                                    <input class="form-control text-box single-line" id="idIncrementValue_1" type="text" value="" />
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="deleteRow(1);">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+            <div class="form-group">
+                <label asp-for="quantity" class="control-label"></label>
+                <input asp-for="quantity" class="form-control" />
+                <span asp-validation-for="quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="isPiecemeal" /> @Html.DisplayNameFor(model => model.isPiecemeal)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="startTime" class="control-label"></label>
+                <input asp-for="startTime" class="form-control" />
+                <span asp-validation-for="startTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="endsFrom" class="control-label"></label>
+                <input asp-for="endsFrom" class="form-control" />
+                <span asp-validation-for="endsFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="timeZone" class="control-label"></label>
+                <input asp-for="timeZone" class="form-control" />
+                <span asp-validation-for="timeZone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="extensionTimeInSeconds" class="control-label"></label>
+                <input asp-for="extensionTimeInSeconds" class="form-control" />
+                <span asp-validation-for="extensionTimeInSeconds" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="biddingSuspended" /> @Html.DisplayNameFor(model => model.biddingSuspended)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('form').submit(function () {
+            debugger;
+
+            let increments = new Array();
+
+            for (var i = 1; i <= $("#idIncrementTable").find("tbody>tr").length; i++) {
+                let row = document.getElementById("idRow_" + i);
+
+                let increment = {};
+
+                if (row != null) {
+
+                    increment.low = document.getElementById("idLow_" + i).value != "" ? parseInt(document.getElementById("idLow_" + i).value) : 0;
+                    increment.high = document.getElementById("idHigh_" + i).value != "" ? parseInt(document.getElementById("idHigh_" + i).value) : 0;
+                    increment.incrementValue = document.getElementById("idIncrementValue_" + i).value != "" ? parseInt(document.getElementById("idIncrementValue_" + i).value) : 0;
+
+                    increments.push(increment);
+                }
+            }
+            var serializedForm = $(this).serializeArray();
+
+            serializedForm.push({ "name": "increment", "value": increments })
+
+            let data = JSON.stringify(serializedForm);
+            console.log(data);
+
+            $.ajax({
+                url: '@Url.Action("ValidateAndTransformLotDetail")',
+                type: "POST",
+                data: data,
+                success: function (bidResponse) {
+                    //document.getElementById("idBidResponse").style.display = 'block';
+                    //document.getElementById("idBidResponse").value = bidResponse;
+                    //document.getElementById("idBidResponse").innerHTML = bidResponse;
+                },
+                error: function (result) {
+                    alert("Failed");
+                }
+            });
+            return false;
+        });
+    });
+</script>

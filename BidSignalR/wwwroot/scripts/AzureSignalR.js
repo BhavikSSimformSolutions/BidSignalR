@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function bindConnectionMessage(connectionScopedVariable) {
-        debugger
         var messageCallback = function (message) {
             createMessageEntry(message);
         };
@@ -59,12 +58,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function onConnected(connectionScopedVariable) {
-        debugger
         console.log('connection started', connectionScopedVariable);
     }
 
     async function onConnectionError(error) {
-        debugger
         if (error && error.message) {
             document.getElementById("error").innerHTML = error.message;
         } else {
@@ -77,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function () {
         .configureLogging(signalR.LogLevel.Information)
         .withAutomaticReconnect({
             nextRetryDelayInMilliseconds: retryContext => {
-                debugger
                 if (retryContext.elapsedMilliseconds < 60000) {
                     // If we've been reconnecting for less than 60 seconds so far,
                     // wait between 0 and 10 seconds before the next reconnect attempt.
@@ -93,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
     bindConnectionMessage(connection);
 
     async function start() {
-        debugger
         connection.start()
             .then(() => onConnected(connection))
             .then(res => {
@@ -139,4 +134,34 @@ function removeAllDivisions() {
             a.remove()
         })
     }
+}
+
+function addRow() {
+    let rows = $("#idIncrementTable").find("tbody>tr").length + 1;
+
+    $('<tr id="idRow_' + rows + '"><td>' +
+        '<input type="text" class="form-control text-box single-line" id="idLow_' + rows + '" />' +
+        '</td>' +
+        '<td>' +
+        '<input type="text" class="form-control text-box single-line" id="idHigh_' + rows + '" />' +
+        '</td>' +
+        '<td>' +
+        '<input type="text" class="form-control text-box single-line" id="idIncrementValue_' + rows + '" />' +
+        '</td>' +
+        '<td>' +
+        '<button type="button" class="btn btn-danger" onclick="deleteRow(' + rows + ');"><i class="fa fa-trash"></i></button>' +
+        '</td>' +
+        '</tr>').appendTo("#idIncrementTable");
+}
+
+
+
+function deleteRow(index) {
+    let rows = $("#idIncrementTable").find("tbody>tr").length;
+
+    if (rows > 1) {
+        $('#idRow_' + index).remove();
+    }
+
+    return false;
 }

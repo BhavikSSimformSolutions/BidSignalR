@@ -62,15 +62,18 @@ namespace BidSignalR.Controllers
 
             return Json(bidResponse);
         }
-        public ActionResult Bidv2()
+
+        [HttpGet]
+        public ActionResult ValidateAndTransformLotDetail()
         {
-            return View()
+            return View();
         }
+
         [HttpPost]
-        public ActionResult Bidv2(BidV2Model model)
+        public ActionResult ValidateAndTransformLotDetail(ValidateAndTransformLot validateAndTransformLot)
         {
-            BidV2SuccessResponse bidV2SuccessResponse = new BidV2SuccessResponse();
-            return Json(bidV2SuccessResponse);
+            ValidateAndTransformLotSuccessResponse ValidateAndTransformLotSuccessResponse = new ValidateAndTransformLotSuccessResponse();
+            return Json(ValidateAndTransformLotSuccessResponse);
         }
     }
 }
