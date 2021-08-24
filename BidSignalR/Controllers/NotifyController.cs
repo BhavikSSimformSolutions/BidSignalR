@@ -75,7 +75,7 @@ namespace BidSignalR.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> ValidateAndTransformLotDetail([FromBody] ValidateAndTransformLot validateAndTransformLot)
+        public async Task<ActionResult> ValidateAndTransformLotDetail(ValidateAndTransformLot validateAndTransformLot)
         {
             ValidateAndTransformLotSuccessResponse ValidateAndTransformLotSuccessResponse = new ValidateAndTransformLotSuccessResponse();
             var PlaceBidCommand = _mapper.Map<PlaceBidCommand>(validateAndTransformLot);

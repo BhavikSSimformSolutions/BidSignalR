@@ -151,19 +151,13 @@
 
             serializedForm.push({ "name": "increment", "value": increments })
 
-            let data = JSON.stringify(serializedForm);
+            let data = formArrayToJson(serializedForm);
             console.log(data);
-            var data1 = {
-                auctionId: 1
-            }
-
-            var dataType = 'application/json; charset=utf-8';
 
             $.ajax({
                 url: '@Url.Action("ValidateAndTransformLotDetail")',
-                type: "POST",                
-                data: serializedForm,
-
+                type: "POST",
+                data: data,
                 success: function (bidResponse) {
                     //document.getElementById("idBidResponse").style.display = 'block';
                     //document.getElementById("idBidResponse").value = bidResponse;
@@ -176,4 +170,17 @@
             return false;
         });
     });
+    function formArrayToJson(formArray) {
+        var obj = {};
+        $.each(formArray, function (i, pair) {
+            var cObj = obj, pObj, cpName;
+            $.each(pair.name.split("."), function (i, pName) {
+                pObj = cObj;
+                cpName = pName;
+                cObj = cObj[pName] ? cObj[pName] : (cObj[pName] = {});
+            });
+            pObj[cpName] = pair.value;
+        });
+        return obj;
+    }
 </script>
