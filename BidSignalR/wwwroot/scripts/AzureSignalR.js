@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("flush-collapse" + newIdNumber).appendChild(textDiv);
         document.getElementById("flush-heading" + newIdNumber).appendChild(collapseExpand);
 
-        document.getElementById("idButton" + newIdNumber).innerHTML = "Message - " + newIdNumber;
+        document.getElementById("idButton" + newIdNumber).innerHTML = JSON.parse(msgRes).action.timestamp;
         document.getElementById("idText" + newIdNumber).innerHTML = msgRes;
         //End
     }

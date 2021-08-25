@@ -158,10 +158,9 @@
                 type: "POST",
                 data: data,
                 success: function (bidResponse) {
-                    debugger;
                     document.getElementById("idLotResponse").style.display = 'block';
-                    document.getElementById("idLotResponse").value = bidResponse.validationResults[0].description;
-                    document.getElementById("idLotResponse").innerHTML = bidResponse.validationResults[0].description;
+                    document.getElementById("idLotResponse").value = JSON.stringify(bidResponse.validationResults);
+                    document.getElementById("idLotResponse").innerHTML = JSON.stringify(bidResponse.validationResults);
                 },
                 error: function (result) {
                     alert("Failed");
